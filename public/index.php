@@ -7,16 +7,20 @@ $method = strtolower($_SERVER["REQUEST_METHOD"]);
 
 require_once 'libraries/auth.php';
 require_once 'libraries/cors.php';
-require_once 'controllers/userManagement.php';
+//require_once 'controllers/userManagement.php';
 require_once 'controllers/articleManagement.php';
 
 //cors();
 
 switch($route) {
     case "/":
-        viewArticlesController();
+        //viewArticlesController();
+        echo "static kansio";
     break;
-
+    case "/newarticle":
+      postNewsJson();
+    break;
+/*
     case "/register":
         registerController();
     break;
@@ -56,7 +60,7 @@ switch($route) {
         loginController();
       }
     break;
-
+*/
     case "/getnews":
       getNewsJson();
     break;

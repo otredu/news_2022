@@ -14,7 +14,9 @@ function addArticle($title, $text, $time, $removetime, $userid){
     $data = [$title, $text, $time, $removetime, $userid];
     $sql = "INSERT INTO articles (title, text, created, expirydate, userid) VALUES(?,?,?,?,?)";
     $stm=$pdo->prepare($sql);
-    return $stm->execute($data);
+    $stm->execute($data);
+    $new_id = $pdo->lastInsertId();
+    return $new_id;
 }
 
 function getArticleById($id){

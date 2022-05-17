@@ -2,11 +2,12 @@
 require_once "database/models/article.php";
 require_once 'libraries/cleaners.php';
 
+/*
 function viewArticlesController(){
     $allnews = getAllArticles();
     require "views/articles.view.php";    
 }
-
+*/
 function getNewsJson(){
     $allnews = getAllArticles();
     header("Content-Type: application/json");
@@ -15,6 +16,27 @@ function getNewsJson(){
     exit();
 }
 
+function postNewsJson(){
+    // Takes raw data from the request
+    $json = file_get_contents('php://input');
+
+    // Converts it into a PHP object
+    $data = json_decode($json);
+    $time = new DateTime();
+    $removetime = new DateTime();   
+    $userid = 1;
+    $new_id = addArticle($data->title, $data->text, $time->format(DateTime::ATOM), $removetime->format(DateTime::ATOM), $userid);
+    
+    $article = getArticleById($new_id);
+
+    //send as json
+    header("Content-Type: application/json");
+    header("Access-Control-Allow-Origin: *");
+    echo json_encode($article);
+    exit();
+}
+
+/*
 function addArticleController(){
     if(isset($_POST['newstitle'], $_POST['newstext'], $_POST['newstime'], $_POST['removedate'])){
         $title = cleanUpInput($_POST['newstitle']);
@@ -22,10 +44,12 @@ function addArticleController(){
         $time = cleanUpInput($_POST['newstime']);
         $removetime = cleanUpInput($_POST['removedate']);   
         $userid = $_SESSION["userid"];
-        addArticle($title, $text, $time, $removetime, $userid); 
-        header("Location: /");    
+        addArticle($title, $text, $time, $removetime, $userid);
+        exit();
+        //header("Location: /");    
     } else {
-        require "views/newArticle.view.php";
+        echo "ei tallentunut";
+        //require "views/newArticle.view.php";
     }
 }
 
@@ -94,7 +118,7 @@ function deleteArticleController(){
     header("Location: /");
     exit;
 }
-
+*/
 
 
 
